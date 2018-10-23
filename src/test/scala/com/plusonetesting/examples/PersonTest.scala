@@ -22,7 +22,24 @@ class PersonTest extends WordSpec with Matchers {
       val paul = Person("Paul", "Smith", 1)
       paul.description should be("Paul Smith is 1 year old.")
     }
-
   }
 
+  "The companion object" should {
+
+    val (akira, peter, nick) = (
+      Person("Akira", "Sakura", 12),
+      Person("Peter", "Muller", 34),
+      Person("Nick", "Tagart", 52)
+      )
+
+    "return a list of adult persons" in {
+      val ref = List(akira, peter, nick)
+      Person.filterAdult(ref) should be(List(peter, nick))
+    }
+
+    "return an empty list if no adult in the list" in {
+      val ref = List(akira)
+      Person.filterAdult(ref) should be(List.empty)
+    }
+  }
 }
