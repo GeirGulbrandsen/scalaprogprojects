@@ -4,6 +4,7 @@ import scala.annotation.tailrec
 
 case class RetCalcParams(nbOfMonthsInRetirement: Int, netIncome: Int,
                          currentExpenses: Int, initialCapital: Int)
+
 object RetCalc {
 
   def futureCapital(returns: Returns, nbOfMonths: Int, netIncome: Int,
@@ -22,7 +23,7 @@ object RetCalc {
 
 
   def simulatePlan(returns: Returns, params: RetCalcParams, nbOfMonthsSaving: Int,
-                   ): (Double, Double) = {
+                  ): (Double, Double) = {
     import params._
 
     val capitalAtRetirement = futureCapital(returns, nbOfMonthsSaving,
