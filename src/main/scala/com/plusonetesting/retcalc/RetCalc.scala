@@ -19,7 +19,7 @@ object SimulatePlanApp extends App {
     val (capitalAtRetirement, capitalAfterDeath) =
       RetCalc.simulatePlan(
         returns = allReturns.fromUntil(from, until),
-        params = RetCalcParams (
+        params = RetCalcParams(
           nbOfMonthsInRetirement = nbOfYearsInRetirement * 12,
           netIncome = args(3).toInt,
           currentExpenses = args(4).toInt,
@@ -66,22 +66,7 @@ object RetCalc {
   }
 
 
-  def nbOfMonthsSaving(returns: Returns, params: RetCalcParams): Int = {
-
-    @tailrec
-    def loop(months: Int): Int = {
-      val (capitalAtRetirement, capitalAfterDeath) = simulatePlan(returns, params, months)
-
-      if (capitalAfterDeath > 0.0)
-        months
-      else
-        loop(months + 1)
-    }
-
-    loop(0)
-  }
-
-  def nbOfMonthsSavingV2(returns: Returns, params: RetCalcParams): Int = {
+  def nbOfMonthsSaving(returns: Returns, params: RetCalcParams): Option[Int] = {
     import params._
 
     @tailrec
@@ -91,12 +76,12 @@ object RetCalc {
       if (capitalAfterDeath > 0.0)
         months
       else
-        loop(0)
+        loop(months + 1)
     }
 
     if (netIncome > currentExpenses)
-      loop(0)
+      Some(loop(0))
     else
-      Int.MaxValue
+      None
   }
 }

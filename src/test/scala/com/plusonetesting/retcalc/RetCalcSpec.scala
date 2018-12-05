@@ -3,6 +3,8 @@ package com.plusonetesting.retcalc
 import org.scalactic.{Equality, TolerantNumerics, TypeCheckedTripleEquals}
 import org.scalatest.{Matchers, WordSpec}
 
+import scala.{None, Some}
+
 class RetCalcSpec extends WordSpec with Matchers with TypeCheckedTripleEquals {
 
   implicit val doubleEquality: Equality[Double] =
@@ -66,7 +68,7 @@ class RetCalcSpec extends WordSpec with Matchers with TypeCheckedTripleEquals {
         FixedReturns(0.04), params)
 
       val expected = 23 * 12 + 1
-      actual should ===(expected)
+      actual should ===(Some(expected))
     }
 
     "not crash if the resulting nbOfMonths is very high" in {
@@ -81,7 +83,7 @@ class RetCalcSpec extends WordSpec with Matchers with TypeCheckedTripleEquals {
 
       val expected = 8280
 
-      actual should ===(expected)
+      actual should ===(Some(expected))
     }
 
     "not loop forever if I enter bad parameters" in {
@@ -91,10 +93,10 @@ class RetCalcSpec extends WordSpec with Matchers with TypeCheckedTripleEquals {
         currentExpenses = 2000,
         initialCapital = 10000)
 
-      val actual = RetCalc.nbOfMonthsSavingV2(
+      val actual = RetCalc.nbOfMonthsSaving(
         FixedReturns(0.04), params)
 
-      actual should === (Int.MaxValue)
+      actual.toRight() should === (None)
     }
   }
 
